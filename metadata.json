@@ -1,0 +1,6 @@
+{
+  "name": "GPU Infrastructure Estimator for LLMs",
+  "description": "A web application to estimate the GPU infrastructure required to run Large Language Models based on various parameters like model size, usage, and performance requirements.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
