@@ -20,7 +20,10 @@ const GpuCatalogDisplay: React.FC<GpuCatalogDisplayProps> = ({ gpuCatalog, onGpu
                 Modèle GPU
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                8 bits FLOPS/TOPS
+                INT8 (TOPS)
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                FP16 (TFLOPS)
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 VRAM (GB)
@@ -38,6 +41,7 @@ const GpuCatalogDisplay: React.FC<GpuCatalogDisplayProps> = ({ gpuCatalog, onGpu
               <tr key={gpu.model}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{gpu.model}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{gpu.tops_8bit.toLocaleString('fr-FR')}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{gpu.tflops_16bit.toLocaleString('fr-FR')}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{gpu.vram_gb.toLocaleString('fr-FR')}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{gpu.bw_gbps.toLocaleString('fr-FR')}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

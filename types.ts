@@ -27,6 +27,7 @@ export interface ModelSpec {
 export interface GpuSpec {
   model: string;
   tops_8bit: number;
+  tflops_16bit: number;
   vram_gb: number;
   bw_gbps: number;
   price_eur: number;

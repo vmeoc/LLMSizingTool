@@ -35,8 +35,12 @@ export function calculateInfrastructure(userInput: UserInput, gpuCatalog: GpuSpe
   const required_tokens_s = Tout * Q;
 
   const calculateForGpu = (gpu: GpuSpec, N_override?: number): CalculationResults => {
-    const { tops_8bit: TF, vram_gb: VR, bw_gbps: BW } = gpu;
+    const { tops_8bit, tflops_16bit, vram_gb: VR, bw_gbps: BW } = gpu;
     
+    // Sélectionne la puissance de calcul en fonction de la précision (B = Octets/param)
+    // B=1 -> INT8 (tops_8bit), B=2 -> FP16 (tflops_16bit). Pour B > 2, on utilise FP16 par défaut.
+    const TF = B === 1 ? tops_8bit : tflops_16bit;
+
     // 5. Tokens supportés par GPU (critère VRAM)
     const available_vram_for_kv = VR * 0.9 - vram_model_gib; // use 90% of VRAM
     const tokens_fit_per_gpu = available_vram_for_kv > 0 ? Math.floor(available_vram_for_kv / kv_cache_per_token_gib) : 0;
