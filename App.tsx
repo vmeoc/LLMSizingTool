@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { UserInput, CalculationResults, GpuSpec } from './types';
 import { PREDEFINED_MODELS, GPU_CATALOG, DEFAULT_USER_INPUT } from './constants';
@@ -52,34 +53,34 @@ const App: React.FC = () => {
     if (!results) return;
 
     const headers = [
-      "Paramètre", "Valeur d'entrée", "", "Résultat", "Valeur calculée"
+      "Parameter", "Input Value", "", "Result", "Calculated Value"
     ];
 
     const inputData = [
-      { param: "Nom du modèle", value: userInput.model_name },
-      { param: "Nb de paramètres", value: userInput.params_b },
-      { param: "Nb de paramètres actifs (MoE)", value: userInput.active_params_b },
-      { param: "Octets/param", value: userInput.precision_b },
-      { param: "Hidden size", value: userInput.hidden_size },
-      { param: "Nb layers", value: userInput.num_layers },
-      { param: "Tokens input", value: userInput.tokens_in },
-      { param: "Tokens output", value: userInput.tokens_out },
+      { param: "Model Name", value: userInput.model_name },
+      { param: "Number of Parameters (B)", value: userInput.params_b },
+      { param: "Active Parameters (MoE, B)", value: userInput.active_params_b },
+      { param: "Bytes/param", value: userInput.precision_b },
+      { param: "Hidden Size", value: userInput.hidden_size },
+      { param: "Number of Layers", value: userInput.num_layers },
+      { param: "Input Tokens", value: userInput.tokens_in },
+      { param: "Output Tokens", value: userInput.tokens_out },
       { param: "QPS", value: userInput.qps },
-      { param: "Latence cible (s)", value: userInput.latency_s },
-      { param: "GPU target", value: userInput.gpu_model },
-      { param: "Nb GPU imposé", value: userInput.gpu_count_override || "N/A" },
+      { param: "Target Latency (s)", value: userInput.latency_s },
+      { param: "Target GPU", value: userInput.gpu_model },
+      { param: "Forced GPU Count", value: userInput.gpu_count_override || "N/A" },
     ];
 
     const outputData = [
-        { param: "GPU Recommandé", value: results.recommendedGpuModel },
-        { param: "Nombre de GPU Recommandé", value: results.gpu_recommended },
-        { param: "VRAM Modèle (GiB)", value: results.vram_model_gib.toFixed(2) },
-        { param: "VRAM KV Cache (GiB)", value: results.vram_kv_gib.toFixed(2) },
-        { param: "VRAM Totale (GiB)", value: results.vram_total_gib.toFixed(2) },
-        { param: "Latence Estimée (s)", value: results.latency_est_s.toFixed(2) },
-        { param: "Débit Requis (tokens/s)", value: results.required_tokens_s.toFixed(0) },
-        { param: "Débit Disponible (tokens/s)", value: results.tokens_per_s_cluster.toFixed(0) },
-        { param: "Coût CAPEX Total (€)", value: results.total_cost_eur.toLocaleString('fr-FR') },
+        { param: "Recommended GPU", value: results.recommendedGpuModel },
+        { param: "Recommended GPU Count", value: results.gpu_recommended },
+        { param: "Model VRAM (GiB)", value: results.vram_model_gib.toFixed(2) },
+        { param: "KV Cache VRAM (GiB)", value: results.vram_kv_gib.toFixed(2) },
+        { param: "Total VRAM (GiB)", value: results.vram_total_gib.toFixed(2) },
+        { param: "Estimated Latency (s)", value: results.latency_est_s.toFixed(2) },
+        { param: "Required Throughput (tokens/s)", value: results.required_tokens_s.toFixed(0) },
+        { param: "Available Throughput (tokens/s)", value: results.tokens_per_s_cluster.toFixed(0) },
+        { param: "Total CAPEX Cost (EUR)", value: results.total_cost_eur.toLocaleString('en-US') },
     ];
     
     let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
@@ -100,7 +101,7 @@ const App: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "estimation_infra_llm.csv");
+    link.setAttribute("download", "llm_infra_estimation.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -113,7 +114,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <h1 className="text-xl sm:text-2xl font-bold text-brand-primary">
-              Estimateur d'Infrastructure GPU pour LLMs
+              GPU Infrastructure Estimator for LLMs
             </h1>
           </div>
         </div>
@@ -130,7 +131,7 @@ const App: React.FC = () => {
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none`}
                 >
-                    Estimateur
+                    Estimator
                 </button>
                 <button
                     onClick={() => setActiveTab('catalog')}
@@ -140,7 +141,7 @@ const App: React.FC = () => {
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none`}
                 >
-                    Catalogue GPU
+                    GPU Catalog
                 </button>
             </nav>
         </div>
@@ -172,9 +173,12 @@ const App: React.FC = () => {
             <p>
               LLM Sizing tool by <a href="https://www.linkedin.com/in/vincent-meoc/" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">Vincent Méoc</a>.
             </p>
-            <p>This is a work in progress at the "seeking feedback" stage :)</p>
-            <p className="mt-4 italic">
-              Not taken into account: redundancy, ingress, egress, other app components, LB, monitoring, etc.
+            <p>This tool is currently in a beta version and we welcome your feedback.</p>
+            <p className="mt-4 italic text-xs">
+              Disclaimer: This estimation does not account for infrastructure redundancy, networking costs (ingress/egress), other application components, load balancers, or monitoring systems.
+            </p>
+            <p className="mt-4 italic text-xs max-w-4xl mx-auto">
+              This estimator is designed to size “dense” models up to a few tens of billions of parameters with moderate context windows. For special architectures (Mixture-of-Experts/MoE), very long contexts, or deployments involving high degrees of parallelism (typically ≥ 16 GPUs), the compute topology introduces additional constraints (weight sharding, prefill/decoding separation, etc.) that this tool does not model. In these cases, please refer to the model’s official documentation for the recommended configuration.
             </p>
         </footer>
       </main>

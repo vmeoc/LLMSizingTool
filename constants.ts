@@ -8,6 +8,8 @@ export const PREDEFINED_MODELS: ModelSpec[] = [
   { name: 'Llama 2 7B', params_b: 7, active_params_b: 7, precision_b: 2, hidden_size: 4096, num_layers: 32 },
   { name: 'llama-3.1-8b-instruct', params_b: 8, active_params_b: 8, precision_b: 2, hidden_size: 4096, num_layers: 32 },
   { name: 'Kimi K2', params_b: 1000, active_params_b: 32, precision_b: 1, hidden_size: 7168, num_layers: 61 },
+  { name: 'Open AI gpt-oss-20b', params_b: 20.8, active_params_b: 4, precision_b: 0.5, hidden_size: 2880, num_layers: 24 },
+  { name: 'Open AI gpt-oss-120', params_b: 117, active_params_b: 5.4, precision_b: 0.5, hidden_size: 2880, num_layers: 36 },
 ];
 
 export const GPU_CATALOG: GpuSpec[] = [
